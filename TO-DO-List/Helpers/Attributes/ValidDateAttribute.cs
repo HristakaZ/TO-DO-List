@@ -13,7 +13,7 @@ namespace Helpers.Attributes
         {
             DateTime date = Convert.ToDateTime(value);
 
-            return date >= DateTime.UtcNow;
+            return date >= DateTime.Now;
         }
     }
 }
