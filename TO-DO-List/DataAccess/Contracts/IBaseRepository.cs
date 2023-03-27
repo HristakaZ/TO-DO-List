@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataAccess.Contracts
+﻿namespace DataAccess.Contracts
 {
-    internal interface IBaseRepository<T> where T : class
+    public interface IBaseRepository
     {
-        IQueryable<T> Get();
+        IQueryable<T> GetAll<T>() where T : class;
 
-        void Create(T model);
+        void Create<T>(T model) where T : class;
 
-        void Update(T model);
+        void Update<T>(T model) where T : class;
 
-        void Delete(T model);
+        void Delete<T>(T model) where T : class;
     }
 }

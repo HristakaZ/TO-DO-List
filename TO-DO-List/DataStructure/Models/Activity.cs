@@ -1,5 +1,5 @@
-﻿using Helpers.Attributes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DataStructure.Attributes;
 
 namespace DataStructure.Models
 {

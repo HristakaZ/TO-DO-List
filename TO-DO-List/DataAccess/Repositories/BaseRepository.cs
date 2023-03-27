@@ -2,26 +2,36 @@
 
 namespace DataAccess.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository : IBaseRepository
     {
-        public IQueryable<T> Get()
+        private readonly ApplicationDbContext applicationDbContext;
+
+        public BaseRepository(ApplicationDbContext applicationDbContext)
         {
-            throw new NotImplementedException();
+            this.applicationDbContext = applicationDbContext;
         }
 
-        public void Create(T model)
+        public IQueryable<T> GetAll<T>() where T : class
         {
-            throw new NotImplementedException();
+            return this.applicationDbContext.Set<T>();
         }
 
-        public void Update(T model)
+        public void Create<T>(T model) where T : class
         {
-            throw new NotImplementedException();
+            this.applicationDbContext.Add<T>(model);
+            this.applicationDbContext.SaveChanges();
         }
 
-        public void Delete(T model)
+        public void Update<T>(T model) where T : class
         {
-            throw new NotImplementedException();
+            this.applicationDbContext.Update<T>(model);
+            this.applicationDbContext.SaveChanges();
+        }
+
+        public virtual void Delete<T>(T model) where T : class //might be used for soft delete(reason to set to virtual)
+        {
+            this.applicationDbContext.Remove<T>(model);
+            this.applicationDbContext.SaveChanges();
         }
     }
 }

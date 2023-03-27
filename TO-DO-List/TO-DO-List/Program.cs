@@ -1,5 +1,9 @@
 using DataAccess;
+using DataAccess.Contracts;
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using TO_DO_List.Services.Contracts;
+using TO_DO_List.Services.User;
 
 namespace TO_DO_List
 {
@@ -15,7 +19,13 @@ namespace TO_DO_List
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IBaseRepository, BaseRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,7 +41,9 @@ namespace TO_DO_List
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
