@@ -1,13 +1,19 @@
-﻿namespace DataAccess.Contracts
+﻿using DataStructure.Models;
+
+namespace DataAccess.Contracts
 {
     public interface IBaseRepository
     {
-        IQueryable<T> GetAll<T>() where T : class;
+        IQueryable<T> GetAll<T>() where T : BaseEntity;
 
-        void Create<T>(T model) where T : class;
+        T GetByID<T>(int id) where T : BaseEntity;
 
-        void Update<T>(T model) where T : class;
+        void Create<T>(T model) where T : BaseEntity;
 
-        void Delete<T>(T model) where T : class;
+        void Update<T>(T model) where T : BaseEntity;
+
+        void Delete<T>(T model) where T : BaseEntity;
+
+        void SoftDelete<T>(T model) where T : SoftDeleteModel;
     }
 }

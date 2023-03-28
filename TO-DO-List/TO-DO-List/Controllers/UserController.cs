@@ -19,9 +19,17 @@ namespace TO_DO_List.Controllers
         }
 
         [Authenticate]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Authenticate]
+        [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
         {
-            string? oldPassword = baseRepository.GetAll<User>().FirstOrDefault(x => x.Password 
+            string? oldPassword = baseRepository.GetAll<User>().FirstOrDefault(x => x.Password
                                                                                 == userService.HashPassword(changePasswordViewModel.OldPassword))!
                                                                                 .Password;
             if (string.IsNullOrEmpty(oldPassword))
@@ -40,9 +48,16 @@ namespace TO_DO_List.Controllers
             loggedInUser.Password = userService.HashPassword(changePasswordViewModel.NewPassword);
             baseRepository.Update<User>(loggedInUser);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult Register(User user)
         {
             if (!ModelState.IsValid)
@@ -55,6 +70,13 @@ namespace TO_DO_List.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult Login(User user)
         {
             string hashedPassword = userService.HashPassword(user.Password);
@@ -71,16 +93,18 @@ namespace TO_DO_List.Controllers
             HttpContext.Session.SetString("UserEmail", userFromDb.Email);
             HttpContext.Session.SetString("Username", userFromDb.Username);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
         }
 
+        [Authenticate]
+        [HttpGet]
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("UserID");
             HttpContext.Session.Remove("UserEmail");
             HttpContext.Session.Remove("Username");
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
         }
     }
 }

@@ -3,10 +3,8 @@ using DataStructure.Attributes;
 
 namespace DataStructure.Models
 {
-    public class Activity
+    public class Activity : SoftDeleteModel
     {
-        public int ID { get; set; }
-
         [Required]
         [MinLength(1)]
         public string Name { get; set; }
@@ -19,8 +17,6 @@ namespace DataStructure.Models
         [Required]
         [ValidDate(ErrorMessage = "Invalid date.")]
         public DateTime DueDate { get; set; }
-
-        public bool IsDeleted { get; set; }
 
         public virtual User User { get; set; } = new User();
 

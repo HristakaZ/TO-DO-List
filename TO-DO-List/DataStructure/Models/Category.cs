@@ -2,10 +2,8 @@
 
 namespace DataStructure.Models
 {
-    public class Category
+    public class Category : BaseEntity
     {
-        public int ID { get; set; }
-
         [Required]
         public string Name { get; set; }
 

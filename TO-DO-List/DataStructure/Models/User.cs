@@ -2,10 +2,8 @@
 
 namespace DataStructure.Models
 {
-    public class User
+    public class User : BaseEntity
     {
-        public int ID { get; set; }
-
         [Required]
         [MinLength(4)]
         public string Username { get; set; }
