@@ -7,7 +7,7 @@ namespace TO_DO_List.Attributes
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            bool isUserAuthenticated = context.HttpContext.Session.GetInt32("UserID") != 0 ? true : false;
+            bool isUserAuthenticated = context.HttpContext.Session.GetInt32("UserID").HasValue;
 
             if (!isUserAuthenticated)
             {

@@ -77,21 +77,20 @@ namespace TO_DO_List.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(User user)
+        public IActionResult Login(UserViewModel userViewModel)
         {
-            string hashedPassword = userService.HashPassword(user.Password);
+            string hashedPassword = userService.HashPassword(userViewModel.Password);
             //for the next line to be legit, there should be one input that corresponds to both the email and username properties
             User? userFromDb = this.baseRepository.GetAll<User>()
-                                                 .FirstOrDefault(x => (x.Username == user.Username || x.Email == user.Email)
-                                                                                                   && x.Password == hashedPassword);
+                                                 .FirstOrDefault(x => (x.Email == userViewModel.Email)
+                                                                        && x.Password == hashedPassword);
             if (userFromDb == null)
             {
-                ModelState.AddModelError("LoginError", "A user with this email/username and password does not exist.");
-                return View(userFromDb);
+                ModelState.AddModelError("", "A user with this username or password does not exist.");
+                return View(userViewModel);
             }
             HttpContext.Session.SetInt32("UserID", userFromDb.ID);
             HttpContext.Session.SetString("UserEmail", userFromDb.Email);
-            HttpContext.Session.SetString("Username", userFromDb.Username);
 
             return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
         }
@@ -102,7 +101,6 @@ namespace TO_DO_List.Controllers
         {
             HttpContext.Session.Remove("UserID");
             HttpContext.Session.Remove("UserEmail");
-            HttpContext.Session.Remove("Username");
 
             return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
         }
