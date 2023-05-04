@@ -1,4 +1,4 @@
-﻿@model DataStructure.Models.Activity
+﻿@model ActivityViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -24,19 +24,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="WarningLevel" class="control-label"></label>
-                <select asp-for="WarningLevel" class="form-control"></select>
+                <select asp-for="WarningLevel" asp-items="Model.WarningLevels" class="form-control"></select>
                 <span asp-validation-for="WarningLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Category</label>
+                <select asp-for="CategoryID" asp-items="Model.Categories" class="form-control"></select>
+                <span asp-validation-for="CategoryID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DueDate" class="control-label"></label>
                 <input asp-for="DueDate" class="form-control" />
                 <span asp-validation-for="DueDate" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

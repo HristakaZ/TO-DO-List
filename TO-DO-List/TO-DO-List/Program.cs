@@ -26,6 +26,7 @@ namespace TO_DO_List
             });
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IBaseRepository, BaseRepository>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

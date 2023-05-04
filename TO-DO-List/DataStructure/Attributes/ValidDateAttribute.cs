@@ -2,13 +2,13 @@
 
 namespace DataStructure.Attributes
 {
-    internal class ValidDateAttribute : ValidationAttribute
+    public class ValidDateAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
             DateTime date = Convert.ToDateTime(value);
 
-            return date >= DateTime.Now;
+            return date.Date >= DateTime.Now.Date;
         }
     }
 }

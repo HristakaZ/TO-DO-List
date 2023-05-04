@@ -64,7 +64,7 @@ namespace TO_DO_List.Controllers
             {
                 return View(user);
             }
-
+            user.Password = userService.HashPassword(user.Password);
             baseRepository.Create<User>(user);
 
             return RedirectToAction(nameof(Login));
