@@ -48,7 +48,7 @@ namespace TO_DO_List.Controllers
             loggedInUser.Password = userService.HashPassword(changePasswordViewModel.NewPassword);
             baseRepository.Update<User>(loggedInUser);
 
-            return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
+            return RedirectToAction(nameof(ActivityController.Index), "Activity");
         }
 
         [HttpGet]
@@ -80,7 +80,6 @@ namespace TO_DO_List.Controllers
         public IActionResult Login(UserViewModel userViewModel)
         {
             string hashedPassword = userService.HashPassword(userViewModel.Password);
-            //for the next line to be legit, there should be one input that corresponds to both the email and username properties
             User? userFromDb = this.baseRepository.GetAll<User>()
                                                  .FirstOrDefault(x => (x.Email == userViewModel.Email)
                                                                         && x.Password == hashedPassword);
@@ -92,7 +91,7 @@ namespace TO_DO_List.Controllers
             HttpContext.Session.SetInt32("UserID", userFromDb.ID);
             HttpContext.Session.SetString("UserEmail", userFromDb.Email);
 
-            return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
+            return RedirectToAction(nameof(ActivityController.Index), "Activity");
         }
 
         [Authenticate]
@@ -102,7 +101,7 @@ namespace TO_DO_List.Controllers
             HttpContext.Session.Remove("UserID");
             HttpContext.Session.Remove("UserEmail");
 
-            return RedirectToAction(nameof(ActivityController.Index), "Activity"/*nameof(ActivityController) - this might not work, because this will just stringify the controller's name*/);
+            return RedirectToAction(nameof(ActivityController.Index), "Activity");
         }
     }
 }

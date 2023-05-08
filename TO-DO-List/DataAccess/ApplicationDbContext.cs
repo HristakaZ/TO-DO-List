@@ -10,6 +10,11 @@ namespace DataAccess
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
+
         public DbSet<Activity> Activities { get; set; }
 
         public DbSet<Category> Categories { get; set; }
