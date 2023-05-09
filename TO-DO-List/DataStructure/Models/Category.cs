@@ -8,5 +8,7 @@ namespace DataStructure.Models
         public string Name { get; set; }
 
         public virtual List<Activity> Activities { get; set; } = new List<Activity>();
+
+        public virtual User? User { get; set; } = new User();
     }
 }

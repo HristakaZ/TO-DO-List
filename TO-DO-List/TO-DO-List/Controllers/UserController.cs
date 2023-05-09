@@ -18,39 +18,6 @@ namespace TO_DO_List.Controllers
             this.userService = userService;
         }
 
-        [Authenticate]
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        [Authenticate]
-        [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
-        {
-            string? oldPassword = baseRepository.GetAll<User>().FirstOrDefault(x => x.Password
-                                                                                == userService.HashPassword(changePasswordViewModel.OldPassword))!
-                                                                                .Password;
-            if (string.IsNullOrEmpty(oldPassword))
-            {
-                ModelState.AddModelError("OldPassword", "Please enter a valid password.");
-                return View(changePasswordViewModel);
-            }
-
-            if (changePasswordViewModel.NewPassword != changePasswordViewModel.ConfirmPassword)
-            {
-                ModelState.AddModelError("NewPasswordConfirmPassword", "New Password and Confirm Password must match.");
-                return View(changePasswordViewModel);
-            }
-
-            User loggedInUser = baseRepository.GetAll<User>().FirstOrDefault(x => x.ID == HttpContext.Session.GetInt32("UserID"))!;
-            loggedInUser.Password = userService.HashPassword(changePasswordViewModel.NewPassword);
-            baseRepository.Update<User>(loggedInUser);
-
-            return RedirectToAction(nameof(ActivityController.Index), "Activity");
-        }
-
         [HttpGet]
         public IActionResult Register()
         {

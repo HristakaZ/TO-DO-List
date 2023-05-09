@@ -103,7 +103,7 @@ namespace TO_DO_List.Controllers
                 });
             }
 
-            List<Category> categories = baseRepository.GetAll<Category>().ToList();
+            List<Category> categories = baseRepository.GetAll<Category>().Where(x => x.User!.ID == HttpContext.Session.GetInt32("UserID")!.Value).ToList();
             foreach (Category category in categories)
             {
                 activityViewModel.Categories.Add(new SelectListItem()

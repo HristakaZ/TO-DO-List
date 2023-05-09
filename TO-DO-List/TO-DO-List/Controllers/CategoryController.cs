@@ -2,6 +2,7 @@
 using DataStructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using TO_DO_List.Attributes;
+using TO_DO_List.ViewModels;
 
 namespace TO_DO_List.Controllers
 {
@@ -18,7 +19,7 @@ namespace TO_DO_List.Controllers
         [Authenticate]
         public IActionResult Index()
         {
-            return View(baseRepository.GetAll<Category>());
+            return View(baseRepository.GetAll<Category>().Where(x => x.User!.ID == HttpContext.Session.GetInt32("UserID")!.Value));
         }
 
         [Authenticate]
@@ -37,13 +38,18 @@ namespace TO_DO_List.Controllers
 
         [Authenticate]
         [HttpPost]
-        public IActionResult Create(Category category)
+        public IActionResult Create(CategoryViewModel categoryViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(category);
+                return View(categoryViewModel);
             }
 
+            Category category = new Category()
+            {
+                Name = categoryViewModel.Name,
+                User = baseRepository.GetByID<User>(HttpContext.Session.GetInt32("UserID")!.Value)
+            };
             baseRepository.Create<Category>(category);
 
             return RedirectToAction(nameof(Index));
@@ -53,18 +59,24 @@ namespace TO_DO_List.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            return View(baseRepository.GetByID<Category>(id));
+            Category category = baseRepository.GetByID<Category>(id);
+            return View(new CategoryViewModel()
+            {
+                ID = category.ID,
+                Name = category.Name
+            });
         }
 
         [Authenticate]
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(CategoryViewModel categoryViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(category);
+                return View(categoryViewModel);
             }
-
+            Category category = baseRepository.GetByID<Category>(categoryViewModel.ID);
+            category.Name = categoryViewModel.Name;
             baseRepository.Update<Category>(category);
             return RedirectToAction(nameof(Index));
         }
