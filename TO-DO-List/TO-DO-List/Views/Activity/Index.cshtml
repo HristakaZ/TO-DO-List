@@ -73,7 +73,7 @@
                 <td>
                     @if (DateTime.Now.Date > item.DueDate.Date && !item.IsDeleted)
                     {
-                        <p style="color:red">Warning - task is overdue!</p>
+                        <p style="color:red">Warning - activity is overdue!</p>
                     }
                     @Html.DisplayFor(modelItem => item.DueDate)
                 </td>
